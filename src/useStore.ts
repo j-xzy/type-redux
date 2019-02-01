@@ -12,5 +12,5 @@ export function useStore<S, T extends IReducers<S>>(store: Store<S, T>, areEqual
     return () => unSubscribe();
   });
 
-  return { state: store.State, dispatch: store.dispatch };
+  return { state: store.State, dispatch: store.dispatch, dispatchAsync: store.dispatchAsync };
 }

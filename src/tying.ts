@@ -1,7 +1,12 @@
-export type IReducer<T> = (data: any, state: T) => T;
+export type IReducer<S> = (data: any, state: S) => S;
+export type IReducerAsync<S> = (data: any, state: () => S) => Promise<S>;
 
-export interface IReducers<T> {
-  [p: string]: IReducer<T>;
+export interface IReducers<S> {
+  [p: string]: IReducer<S> | IReducerAsync<S>;
 }
 
-export type IAreEqual<T> = (preState: T, next: T) => boolean;
+export type IAreEqual<S> = (preState: S, next: S) => boolean;
+
+export type IAnyFunc = (...args: any[]) => any;
+
+export type IAsync<T extends { [p: string]: IAnyFunc }> = { [K in keyof T]: ReturnType<T[K]> extends Promise<any> ? K : never }[keyof T];

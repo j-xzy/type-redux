@@ -27,6 +27,35 @@ export function toggle(id: number, state: IState) {
   return { ...state, list };
 }
 
-export function getListAsync(data: null, state: IState) {
-  return state;
+export function deleteItem(id: number, state: IState) {
+  let index = -1;
+  const todo = state.list.find((item, idx) => {
+    if (item.id === id) {
+      index = idx;
+      return true;
+    }
+    return false;
+  });
+
+  if (!todo) {
+    return state;
+  }
+  const list = [...state.list];
+  list.splice(index, 1);
+  return { ...state, list };
+}
+
+export async function getListAsync(_data: null, getState: () => IState): Promise<IState> {
+  const result: string[] = await fetch('http://localhost:3000', { method: 'GET' }).then((data) => data.json());
+  const state = getState();
+  let maxId = state.maxId;
+  const newList: IListItem[] = result.map((text) => {
+    maxId += 1;
+    return {
+      text,
+      done: false,
+      id: maxId
+    };
+  });
+  return { ...state, list: [...state.list, ...newList], maxId };
 }

@@ -4,6 +4,7 @@
   "main": "./lib/index.js",
   "scripts": {
     "demo": "webpack-dev-server --config ./demo/webpack.config.js --open",
+    "server": "node ./demo/server.js && webpack-dev-server",
     "clean": "rimraf lib",
     "build": "yarn clean && webpack --config ./build/webpack.config.js",
     "lint": "tslint -c tslint.json -p tsconfig.json",

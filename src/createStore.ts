@@ -1,4 +1,4 @@
-import { IReducers } from './tying';
+import { IAsync, IReducer, IReducerAsync, IReducers } from './tying';
 
 export class Store<S, T extends IReducers<S>> {
 
@@ -9,17 +9,18 @@ export class Store<S, T extends IReducers<S>> {
   constructor(private reducers: T, preloadedState: S) {
     this.state = this.lastState = preloadedState;
     this.dispatch = this.dispatch.bind(this);
+    this.dispatchAsync = this.dispatchAsync.bind(this);
   }
 
-  public dispatch<K extends keyof T>(type: K, payload: Parameters<T[K]>[0]) {
+  public dispatch<K extends Exclude<keyof T, IAsync<T>>>(type: K, payload: Parameters<T[K]>[0]) {
     this.lastState = this.state;
-    this.state = this.reducers[type](payload, this.state);
+    this.state = (this.reducers[type] as IReducer<S>)(payload, this.state);
     this.notify();
   }
 
-  public async dispatchAsync<K extends keyof T>(type: K, payload: Parameters<T[K]>[0]) {
+  public async dispatchAsync<K extends IAsync<T>>(type: K, payload: Parameters<T[K]>[0]) {
     this.lastState = this.state;
-    this.state = await this.reducers[type](payload, this.state);
+    this.state = await (this.reducers[type] as IReducerAsync<S>)(payload, () => this.state);
     this.notify();
   }
 

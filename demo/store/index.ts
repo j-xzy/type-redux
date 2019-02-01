@@ -9,13 +9,11 @@ export interface IListItem {
 
 export interface IState {
   list: IListItem[];
-  selectedIds: number[];
   maxId: number;
 }
 
 const state: IState = {
   list: [],
-  selectedIds: [],
   maxId: 0
 };
 
