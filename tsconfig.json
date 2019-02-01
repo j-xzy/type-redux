@@ -13,6 +13,7 @@
     "target": "es2016",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "strictBindCallApply": false,
     "lib": [
       "es6",
       "es2016.array.include",
