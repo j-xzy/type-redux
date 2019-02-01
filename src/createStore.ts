@@ -3,22 +3,32 @@ import { IReducers } from './tying';
 export class Store<S, T extends IReducers<S>> {
 
   private state: S;
+  private lastState: S;
   private listeners: Array<() => any> = [];
 
   constructor(private reducers: T, preloadedState: S) {
-    this.state = preloadedState;
+    this.state = this.lastState = preloadedState;
     this.dispatch = this.dispatch.bind(this);
   }
 
-  public async dispatch<K extends keyof T>(type: K, payload: Parameters<T[K]>[0]) {
+  public dispatch<K extends keyof T>(type: K, payload: Parameters<T[K]>[0]) {
+    this.lastState = this.state;
+    this.state = this.reducers[type](payload, this.state);
+    this.notify();
+  }
+
+  public async dispatchAsync<K extends keyof T>(type: K, payload: Parameters<T[K]>[0]) {
+    this.lastState = this.state;
     this.state = await this.reducers[type](payload, this.state);
-    this.listeners.forEach((callback) => {
-      callback();
-    });
+    this.notify();
   }
 
   public get State() {
     return this.state;
+  }
+
+  public get LastState() {
+    return this.lastState;
   }
 
   public subscribe(listener: () => any) {
@@ -31,6 +41,12 @@ export class Store<S, T extends IReducers<S>> {
     if (index !== -1) {
       this.listeners.splice(index, 1);
     }
+  }
+
+  private notify() {
+    this.listeners.forEach((callback) => {
+      callback();
+    });
   }
 }
 

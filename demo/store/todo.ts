@@ -26,3 +26,7 @@ export function toggle(id: number, state: IState) {
 
   return { ...state, list };
 }
+
+export function getListAsync(data: null, state: IState) {
+  return state;
+}

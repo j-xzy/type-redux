@@ -1,21 +1,22 @@
 import * as React from 'react';
-import { IListItem, IState, useStore } from './store';
+import { IListItem, useStore } from './store';
 
 export function App() {
   const { state } = useStore();
   return (
     <div>
-      {state.list.map((data, idx) => <Item key={idx} {...data} />)}
+      {state.list.map((data) => <Item key={data.id} id={data.id} />)}
       <Add />
     </div>
   );
 }
 
-function Item(props: IListItem) {
-  const { dispatch } = useStore();
+function Item(props: { id: number }) {
+  const { state, dispatch } = useStore();
+  const item = state.list.find(({ id }) => id === props.id)!;
   return (
-    <div onClick={() => dispatch('toggle', props.id)} style={{ textDecoration: props.done ? 'line-through' : 'none' }}>
-      {props.text}
+    <div onClick={() => dispatch('toggle', props.id)} style={{ textDecoration: item.done ? 'line-through' : 'none', border: '1px solid #000' }}>
+      {item.text}
     </div>
   );
 }
