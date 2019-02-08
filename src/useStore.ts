@@ -3,7 +3,7 @@ import { Store } from './createStore';
 import { IAreEqual, IReducers } from './tying';
 
 export function useStore<S, T extends IReducers<S>>(store: Store<S, T>, areEqual: IAreEqual<S> = () => false) {
-  const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
+  const [, forceUpdate] = React.useState({});
   React.useEffect(() => {
     const update = () => {
       areEqual(store.LastState, store.State) || forceUpdate({});
