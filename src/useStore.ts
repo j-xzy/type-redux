@@ -3,10 +3,10 @@ import { Store } from './createStore';
 import { IAreEqual, IReducers } from './tying';
 
 export function useStore<S, T extends IReducers<S>>(store: Store<S, T>, areEqual: IAreEqual<S> = () => false) {
-  const [, setState] = React.useState(null);
+  const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
   React.useEffect(() => {
     const update = () => {
-      areEqual(store.LastState, store.State) || setState(null);
+      areEqual(store.LastState, store.State) || forceUpdate({});
     };
     const unSubscribe = store.subscribe(update);
     return () => unSubscribe();
