@@ -1,4 +1,5 @@
-import { createStore, IAreEqual, useStore as useRawStore } from '../../src';
+import { createStore } from '../../src';
+import { createUseDispatch, createUseMappedState } from '../../src/util';
 import * as todo from './todo';
 
 export interface IListItem {
@@ -7,18 +8,16 @@ export interface IListItem {
   text: string;
 }
 
-export interface IState {
-  list: IListItem[];
-  maxId: number;
-}
-
-const state: IState = {
-  list: [],
-  maxId: 0
+const state = {
+  list: [] as IListItem[],
+  maxId: 0,
+  noreRender: 'noreRender'
 };
 
 const store = createStore(todo, state);
 
-export function useStore(areEqual?: IAreEqual<IState>) {
-  return useRawStore(store, areEqual);
-}
+export type IState = typeof state;
+
+export const useDispatch = createUseDispatch(store);
+
+export const useMappedState = createUseMappedState(store);

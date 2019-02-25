@@ -1,23 +1,27 @@
 import * as React from 'react';
-import { useStore } from './store';
+import { useDispatch, useMappedState } from './store';
 
 export function App() {
-  const { state, dispatchAsync } = useStore();
+  const dispatchAsync = useDispatch(true);
+  const { list, maxId } = useMappedState((state) => ({ list: state.list, maxId: state.maxId }));
+
   React.useEffect(() => {
     dispatchAsync('getListAsync', null);
   }, []);
   return (
     <div>
-      {state.list.map((data) => <Item key={data.id} id={data.id} />)}
+      <Foo />
+      {list.map((data) => <Item key={data.id} id={data.id} />)}
       <Add />
-      maxId:{state.maxId}
+      maxId:{maxId}
     </div>
   );
 }
 
 function Item(props: { id: number }) {
-  const { state, dispatch } = useStore();
-  const item = state.list.find(({ id }) => id === props.id)!;
+  const dispatch = useDispatch();
+  const list = useMappedState((state) => state.list);
+  const item = list.find(({ id }) => id === props.id)!;
 
   return (
     <div onClick={() => dispatch('toggle', props.id)} style={{ textDecoration: item.done ? 'line-through' : 'none', border: '1px solid #000' }}>
@@ -27,8 +31,13 @@ function Item(props: { id: number }) {
   );
 }
 
+function Foo() {
+  const noreRender = useMappedState((state) => state.noreRender);
+  return <div>{noreRender}</div>;
+}
+
 function Add() {
-  const { dispatch } = useStore();
+  const dispatch = useDispatch();
   const [state, setState] = React.useState('');
   return (
     <div>
