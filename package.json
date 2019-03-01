@@ -3,10 +3,8 @@
   "version": "0.0.1",
   "main": "./lib/index.js",
   "scripts": {
-    "demo": "webpack-dev-server --config ./demo/webpack.config.js --open",
-    "server": "node ./demo/server.js && webpack-dev-server",
     "clean": "rimraf lib",
-    "build": "yarn clean && webpack --config ./build/webpack.config.js",
+    "build": "yarn clean && tsc -p ./tsconfig.json",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "fix-lint": "tslint -c tslint.json -p tsconfig.json --fix"
   },
@@ -21,10 +19,12 @@
   "devDependencies": {
     "@types/react": "^16.7.22",
     "@types/react-dom": "^16.0.11",
+    "type-redux-hook": "^0.0.1",
     "clean-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^3.2.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
+    "rimraf": "^2.6.3",
     "ts-loader": "^5.3.3",
     "tslint": "^5.12.0",
     "tslint-loader": "^3.6.0",
