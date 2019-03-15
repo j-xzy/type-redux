@@ -51,11 +51,13 @@ function reducer(state, action) {
 
 有哪些action一目了然,提高编码体验.
 
-2. 约束了不同的action的不同payload
+不用单独声明常量action也不怕action名打错.
+
+2. 约束了不同的action的不同payload参数类型
 
 ![](./doc/payload.png)
 
-再也不用担心payload传错.
+再也不用担心payload类型传错.
 
 3. 一个函数为一个action,函数名对应为action名
 
@@ -69,7 +71,7 @@ function reducer(state, action) {
 npm install type-redux
 ```
 
-1. initialState
+1. **initialState**
 
 ``` ts
 const initialState = {
@@ -81,7 +83,7 @@ type IState = typeof initialState;
 
 初始state值，并且获取其类型.
 
-2. reducer
+2. **reducer**
 
 ``` ts
 function add(payload: number, state: IState) {
@@ -100,7 +102,7 @@ function minus(payload: number, state: IState) {
 
 接受两个参数,第一个为payload,第二个为当前state.
 
-3. createStore
+3. **createStore**
 
 ``` js
 const store = createStore({ add, minus }, initialState);
@@ -144,3 +146,6 @@ store.dispatchAsync('foo', null);
 
 dispatchAsync方法的第一个参数为异步函数action的名称.
 
+## 在React中使用
+
+[type-redux-hook](https://github.com/whj1995/type-redux-hook)
