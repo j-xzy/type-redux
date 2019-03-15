@@ -149,3 +149,9 @@ dispatchAsync方法的第一个参数为异步函数action的名称.
 ## 在React中使用
 
 [type-redux-hook](https://github.com/whj1995/type-redux-hook)
+
+## Example
+
+[例子](https://github.com/whj1995/type-redux/blob/master/doc/index.ts)
+
+[React例子](https://github.com/whj1995/type-redux-hook/tree/master/demo)
