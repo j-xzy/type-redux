@@ -1,12 +1,12 @@
-import { IAsync, IReducers } from './tying';
+import { IDispatch, IDispatchAsync, IReducers } from './tying';
 export declare class Store<S, T extends IReducers<S>> {
     private reducers;
     private state;
     private lastState;
     private listeners;
     constructor(reducers: T, preloadedState: S);
-    dispatch<K extends Exclude<keyof T, IAsync<T>>>(type: K, payload: Parameters<T[K]>[0]): void;
-    dispatchAsync<K extends IAsync<T>>(type: K, payload: Parameters<T[K]>[0]): Promise<void>;
+    dispatch: IDispatch<S, T>;
+    dispatchAsync: IDispatchAsync<S, T>;
     readonly State: S;
     readonly LastState: S;
     subscribe(listener: () => any): () => void;
