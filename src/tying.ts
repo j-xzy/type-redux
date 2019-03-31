@@ -7,9 +7,9 @@ export interface IAsyncDispatch<S, T extends IReducers<S>> {
   dispatchAsync: IDispatchAsync<S, T>;
 }
 
-export type IReducer<S> = (data: any, state: S, dispatch?: IDispatch<S, IReducers<S>>) => S;
+export type IReducer<S> = (data: any, getState: () => S, dispatch: IDispatch<S, IReducers<S>>) => S;
 
-export type IReducerAsync<S> = (data: any, state: () => S, dispatch: IAsyncDispatch<S, IReducers<S>>) => Promise<S>;
+export type IReducerAsync<S> = (data: any, getState: () => S, dispatch: IAsyncDispatch<S, IReducers<S>>) => Promise<S>;
 
 export interface IReducers<S> {
   [p: string]: IReducerAsync<S> | IReducer<S>;
@@ -18,3 +18,7 @@ export interface IReducers<S> {
 export type IAnyFunc = (...args: any[]) => any;
 
 export type IAsync<T extends { [p: string]: IAnyFunc }> = { [K in keyof T]: ReturnType<T[K]> extends Promise<any> ? K : never }[keyof T];
+
+export type IAction<S> = (action: { type: string, payload: any }) => S;
+
+export type IMiddleware<S> = (param: { getState: () => S, dispatch: () => void }) => (next: IAction<S>) => IAction<S>;

@@ -1,37 +1,38 @@
-import { IDispatch, IDispatchAsync, IReducer, IReducerAsync, IReducers } from './tying';
+import { applyMiddleware } from './applyMiddleware';
+import { IAction, IDispatch, IDispatchAsync, IReducer, IReducerAsync, IReducers } from './tying';
 
 export class Store<S, T extends IReducers<S>> {
 
-  private state: S;
+  private _state: S;
   private lastState: S;
   private listeners: Array<() => any> = [];
 
-  constructor(private reducers: T, preloadedState: S) {
-    this.state = this.lastState = preloadedState;
+  public get State() {
+    return this._state;
+  }
+
+  constructor(private reducers: T, preloadedState: S, enchancer?: ReturnType<typeof applyMiddleware>) {
+    this._state = this.lastState = preloadedState;
     this.dispatch = this.dispatch.bind(this);
     this.dispatchAsync = this.dispatchAsync.bind(this);
   }
 
   public dispatch: IDispatch<S, T> = (type, payload) => {
-    this.lastState = this.state;
-    this.state = (this.reducers[type] as IReducer<S>)(payload, this.state, this.dispatch);
+    this.lastState = this._state;
+    this._state = (this.reducers[type] as IReducer<S>)(payload, () => this.State, this.dispatch);
     this.notify();
   }
 
   public dispatchAsync: IDispatchAsync<S, T> = async (type, payload) => {
-    this.lastState = this.state;
-    this.state = await (this.reducers[type] as IReducerAsync<S>)(
+    this.lastState = this._state;
+    this._state = await (this.reducers[type] as IReducerAsync<S>)(
       payload,
-      () => this.state,
+      () => this.State,
       {
         dispatch: this.dispatch,
         dispatchAsync: this.dispatchAsync
       });
     this.notify();
-  }
-
-  public get State() {
-    return this.state;
   }
 
   public get LastState() {
@@ -57,6 +58,6 @@ export class Store<S, T extends IReducers<S>> {
   }
 }
 
-export function createStore<S, T extends IReducers<S>>(reducers: T, preloadedState: S) {
-  return new Store(reducers, preloadedState);
+export function createStore<S, T extends IReducers<S>>(reducers: T, preloadedState: S, enhancer?: ReturnType<typeof applyMiddleware>) {
+  return new Store(reducers, preloadedState, enhancer);
 }
