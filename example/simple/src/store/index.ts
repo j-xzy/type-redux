@@ -1,7 +1,5 @@
-// import { createLogger } from 'redux-logger';
 import { createUseDispatch, createUseMappedState } from 'type-redux-hook';
-import { applyMiddleware, createStore } from '../../../../src';
-import { midd1 } from './middleware';
+import { createStore } from '../../../../src';
 import * as reducers from './reducers';
 
 const initialState = {
@@ -14,7 +12,7 @@ const initialState = {
   }
 };
 
-const store = createStore(reducers, initialState, applyMiddleware(midd1));
+const store = createStore(reducers, initialState);
 
 export type IState = typeof initialState;
 export type IReducers = typeof reducers;

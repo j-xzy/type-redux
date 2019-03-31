@@ -18,7 +18,3 @@ export interface IReducers<S> {
 export type IAnyFunc = (...args: any[]) => any;
 
 export type IAsync<T extends { [p: string]: IAnyFunc }> = { [K in keyof T]: ReturnType<T[K]> extends Promise<any> ? K : never }[keyof T];
-
-export type IAction<S> = (action: { type: string, payload: any }) => S;
-
-export type IMiddleware<S> = (param: { getState: () => S, dispatch: () => void }) => (next: IAction<S>) => IAction<S>;

@@ -1,5 +1,4 @@
-import { applyMiddleware } from './applyMiddleware';
-import { IAction, IDispatch, IDispatchAsync, IReducer, IReducerAsync, IReducers } from './tying';
+import { IDispatch, IDispatchAsync, IReducer, IReducerAsync, IReducers } from './tying';
 
 export class Store<S, T extends IReducers<S>> {
 
@@ -11,7 +10,7 @@ export class Store<S, T extends IReducers<S>> {
     return this._state;
   }
 
-  constructor(private reducers: T, preloadedState: S, enchancer?: ReturnType<typeof applyMiddleware>) {
+  constructor(private reducers: T, preloadedState: S) {
     this._state = this.lastState = preloadedState;
     this.dispatch = this.dispatch.bind(this);
     this.dispatchAsync = this.dispatchAsync.bind(this);
@@ -58,6 +57,6 @@ export class Store<S, T extends IReducers<S>> {
   }
 }
 
-export function createStore<S, T extends IReducers<S>>(reducers: T, preloadedState: S, enhancer?: ReturnType<typeof applyMiddleware>) {
-  return new Store(reducers, preloadedState, enhancer);
+export function createStore<S, T extends IReducers<S>>(reducers: T, preloadedState: S) {
+  return new Store(reducers, preloadedState);
 }
