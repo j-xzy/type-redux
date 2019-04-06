@@ -29,7 +29,7 @@ app.use('/__reload__', function (req, res) {
   });
 });
 
-app.get('/random', function (req, res) {
+app.get('/user', function (req, res) {
   res.json({ num: Math.random() * 10 });
 });
 

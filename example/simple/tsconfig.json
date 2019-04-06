@@ -5,7 +5,7 @@
     "noImplicitAny": true,
     "experimentalDecorators": true,
     "module": "esnext",
-    "target": "es6",
+    "target": "esnext",
     "strictBindCallApply": false,
     "lib": [
       "es6",

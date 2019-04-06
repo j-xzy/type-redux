@@ -2,9 +2,16 @@ import { store } from './store';
 
 const $ = (selector: string) => document.querySelector(selector);
 $('#count')!.innerHTML = store.getState().count + '';
+$('#loading')!.innerHTML = 'done';
 
 store.subscribe(() => {
-  $('#count')!.innerHTML = store.getState().count + '';
+  const state = store.getState();
+  if (state.loading) {
+    $('#loading')!.innerHTML = 'loading...';
+  } else {
+    $('#loading')!.innerHTML = 'done';
+  }
+  $('#count')!.innerHTML = state.count + '';
 });
 
 $('#addone')!.addEventListener('click', () => {
@@ -15,10 +22,10 @@ $('#minusone')!.addEventListener('click', () => {
   store.commit('minusOne');
 });
 
-$('#set')!.addEventListener('click', (e) => {
+$('#set')!.addEventListener('click', () => {
   store.commit('set', Number(($('#setipt') as any).value));
 });
 
-$('#server')!.addEventListener('click', (e) => {
+$('#server')!.addEventListener('click', () => {
   store.dispatch('fetchNewestCount');
 });

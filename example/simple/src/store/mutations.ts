@@ -19,3 +19,11 @@ export function minus(getState: IGetState, payload: number) {
 export function set(getState: IGetState, payload: number) {
   return { ...getState(), count: payload };
 }
+
+export function repUrl(getState: IGetState, url: string) {
+  return { ...getState(), repUrl: url };
+}
+
+export function loading(getState: IGetState, flag: boolean) {
+  return { ...getState(), loading: flag };
+}

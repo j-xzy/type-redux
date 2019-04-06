@@ -71,32 +71,3 @@ export class Store<S, M extends IMutations<S>, A extends IActions<S, M, A>, R ex
 export function createStore<S, M extends IMutations<S>, A extends IActions<S, M, A>, R extends IReducers<S, M, A>>(preloadedState: S, reducers: R) {
   return new Store(preloadedState, reducers);
 }
-
-// const state = {
-//   num: 1
-// };
-
-// type IState = typeof state;
-
-// function Muc(getState: () => IState, payload: number) {
-//   return getState();
-// }
-
-// function Act(ctx: IContext<IState, IM, IA>, payload: string) {
-//   ctx.dispatch('Act')
-//   ctx.commit('Muc')
-// }
-
-// const reducers = {
-//   mutations: { Muc },
-//   actions: { Act }
-// };
-
-// type IM = typeof reducers['mutations'];
-// type IA = typeof reducers['actions'];
-
-// const store = createStore(state, reducers);
-
-// store.dispatch('Act', '');
-// store.commit('Muc', 1);
-// store.dispatch('Act')

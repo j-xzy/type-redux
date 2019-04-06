@@ -10,7 +10,7 @@
     "experimentalDecorators": true,
     "rootDir": "./src",
     "module": "esnext",
-    "target": "es2016",
+    "target": "esnext",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strictBindCallApply": false,
