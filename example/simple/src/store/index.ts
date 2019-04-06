@@ -1,21 +1,16 @@
-import { createUseDispatch, createUseMappedState } from 'type-redux-hook';
-import { createStore } from '../../../../src';
-import * as reducers from './reducers';
+import { createStore, IContext } from '../../../../src';
+import * as actions from './actions';
+import * as mutations from './mutations';
 
 const initialState = {
-  base: -1,
-  baseAddOne: -1,
-  arr: [1, 2, 3],
-  obj: {
-    flag: true,
-    el: false
-  }
+  count: 0
 };
 
-const store = createStore(reducers, initialState);
+const reducers = { mutations, actions };
 
-export type IState = typeof initialState;
-export type IReducers = typeof reducers;
+export const store = createStore(initialState, reducers);
 
-export const useDispatch = createUseDispatch(store);
-export const useMappedState = createUseMappedState(store);
+type IState = typeof initialState;
+export type IGetState = () => IState;
+
+export type ICtx = IContext<IState, typeof reducers['mutations'], typeof reducers['actions']>;

@@ -30,14 +30,14 @@ app.use('/__reload__', function (req, res) {
 });
 
 app.get('/random', function (req, res) {
-  res.json({num: Math.random() * 10});
+  res.json({ num: Math.random() * 10 });
 });
 
 app.post('/addone', function (req, res) {
-  res.json({num: req.body.num + 1});
+  res.json({ num: req.body.num + 1 });
 });
 
 app.listen(port, () => {
   // 打开浏览器
-  require('opn')(`http://localhost:${port}`);
+  console.log('listen', port);
 });

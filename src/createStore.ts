@@ -1,41 +1,36 @@
-import { IDispatch, IDispatchAsync, IReducer, IReducerAsync, IReducers } from './tying';
+import { IActions, ICommit, IDispatch, IMutations, IReducers } from './typing';
 
-export class Store<S, T extends IReducers<S>> {
-
-  private _state: S;
+export class Store<S, M extends IMutations<S>, A extends IActions<S, M, A>, R extends IReducers<S, M, A>> {
+  private state: S;
   private lastState: S;
+  private mutations: R['mutations'];
+  private actions: R['actions'];
   private listeners: Array<() => any> = [];
 
-  public get State() {
-    return this._state;
-  }
+  constructor(preloadedState: S, reducers: R) {
+    this.state = this.lastState = preloadedState;
+    this.mutations = reducers.mutations;
+    this.actions = reducers.actions;
 
-  constructor(private reducers: T, preloadedState: S) {
-    this._state = this.lastState = preloadedState;
     this.dispatch = this.dispatch.bind(this);
-    this.dispatchAsync = this.dispatchAsync.bind(this);
+    this.commit = this.commit.bind(this);
+    this.getState  = this.getState.bind(this);
+    this.getLastState  = this.getLastState.bind(this);
   }
 
-  public dispatch: IDispatch<S, T> = (type, payload) => {
-    this.lastState = this._state;
-    this._state = (this.reducers[type] as IReducer<S>)(payload, () => this.State, this.dispatch);
+  public commit: ICommit<S, R['mutations']> = (mutation, payload) => {
+    this.lastState = this.state;
+    this.state = this.mutations[mutation](this.getState, payload);
     this.notify();
   }
 
-  public dispatchAsync: IDispatchAsync<S, T> = async (type, payload) => {
-    this.lastState = this._state;
-    this._state = await (this.reducers[type] as IReducerAsync<S>)(
-      payload,
-      () => this.State,
-      {
-        dispatch: this.dispatch,
-        dispatchAsync: this.dispatchAsync
-      });
-    this.notify();
-  }
-
-  public get LastState() {
-    return this.lastState;
+  public dispatch: IDispatch<S, R['mutations'], R['actions']> = async (action, payload) => {
+    const act = this.actions[action];
+    if (/^async/.test(act.toString())) {
+      await act(this.context(), payload);
+    } else {
+      act(this.context(), payload);
+    }
   }
 
   public subscribe(listener: () => any) {
@@ -50,6 +45,22 @@ export class Store<S, T extends IReducers<S>> {
     }
   }
 
+  public getState() {
+    return this.state;
+  }
+
+  public getLastState() {
+    return this.lastState;
+  }
+
+  private context() {
+    return {
+      getState: this.getState,
+      commit: this.commit,
+      dispatch: this.dispatch
+    };
+  }
+
   private notify() {
     this.listeners.forEach((callback) => {
       callback();
@@ -57,6 +68,35 @@ export class Store<S, T extends IReducers<S>> {
   }
 }
 
-export function createStore<S, T extends IReducers<S>>(reducers: T, preloadedState: S) {
-  return new Store(reducers, preloadedState);
+export function createStore<S, M extends IMutations<S>, A extends IActions<S, M, A>, R extends IReducers<S, M, A>>(preloadedState: S, reducers: R) {
+  return new Store(preloadedState, reducers);
 }
+
+// const state = {
+//   num: 1
+// };
+
+// type IState = typeof state;
+
+// function Muc(getState: () => IState, payload: number) {
+//   return getState();
+// }
+
+// function Act(ctx: IContext<IState, IM, IA>, payload: string) {
+//   ctx.dispatch('Act')
+//   ctx.commit('Muc')
+// }
+
+// const reducers = {
+//   mutations: { Muc },
+//   actions: { Act }
+// };
+
+// type IM = typeof reducers['mutations'];
+// type IA = typeof reducers['actions'];
+
+// const store = createStore(state, reducers);
+
+// store.dispatch('Act', '');
+// store.commit('Muc', 1);
+// store.dispatch('Act')

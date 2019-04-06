@@ -1,8 +1,24 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { App } from './app';
+import { store } from './store';
 
-ReactDOM.render(
-  React.createElement(App, null, []),
-  document.getElementById('root')
-);
+const $ = (selector: string) => document.querySelector(selector);
+$('#count')!.innerHTML = store.getState().count + '';
+
+store.subscribe(() => {
+  $('#count')!.innerHTML = store.getState().count + '';
+});
+
+$('#addone')!.addEventListener('click', () => {
+  store.commit('addOne');
+});
+
+$('#minusone')!.addEventListener('click', () => {
+  store.commit('minusOne');
+});
+
+$('#set')!.addEventListener('click', (e) => {
+  store.commit('set', Number(($('#setipt') as any).value));
+});
+
+$('#server')!.addEventListener('click', (e) => {
+  store.dispatch('fetchNewestCount');
+});
