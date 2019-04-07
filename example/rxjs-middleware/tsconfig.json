@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "strict": true,
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "target": "esnext",
+    "strictBindCallApply": false,
+    "lib": [
+      "es6",
+      "dom",
+      "es2016.array.include"
+    ],
+    "emitDecoratorMetadata": true,
+    "jsx": "react",
+    "baseUrl": "./"
+  }
+}

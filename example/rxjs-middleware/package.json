@@ -1,13 +1,12 @@
 {
-  "name": "observable",
+  "name": "rxjs-middleware",
   "version": "0.0.0",
   "scripts": {
     "start": "node ./build/server.js"
   },
   "license": "MIT",
   "dependencies": {
-    "rxjs": "6.4.0",
-    "redux-observable": "^1.1.0"
+    "rxjs": "6.4.0"
   },
   "devDependencies": {
     "body-parser": "1.18.3",

@@ -1,4 +1,4 @@
-import { createEpicMiddleware } from 'redux-observable'
+import { createEpicMiddleware } from 'redux-observable';
 import { applyMiddleware, createStore } from '../../../../src';
 import rootEpic from '../epics';
 import * as mutations from './mutations';
