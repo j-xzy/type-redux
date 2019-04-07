@@ -1,17 +1,20 @@
-import { createLogger } from 'redux-logger';
+import { createEpicMiddleware } from 'redux-observable'
 import { applyMiddleware, createStore } from '../../../../src';
-import * as actions from './actions';
+import rootEpic from '../epics';
 import * as mutations from './mutations';
 
+const epicMiddleware = createEpicMiddleware();
+
 const initialState = {
-  count: 0,
-  repUrl: '',
+  content: '',
   loading: false
 };
 
-const reducers = { mutations, actions };
+const reducers = { mutations, actions: {} };
 
-export const store = createStore(initialState, reducers, applyMiddleware(createLogger()));
+export const store = createStore(initialState, reducers, applyMiddleware(epicMiddleware as any));
+
+epicMiddleware.run(rootEpic);
 
 type IState = typeof initialState;
 export type IGetState = () => IState;

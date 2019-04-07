@@ -1,35 +1,60 @@
-import { IActions, ICommit, IDispatch, IMutations, IReducers } from './typing';
+import { applyMiddleware, IEnhancer } from './applyMiddleware';
 
-export class Store<S, M extends IMutations<S>, A extends IActions<S, M, A>, R extends IReducers<S, M, A>> {
+export class Store<
+  S,
+  M extends TypeRedux.IMutations<S>,
+  A extends TypeRedux.IActions<S, M, A>,
+  R extends TypeRedux.IReducers<S, M, A>
+  > {
+
+  public context: TypeRedux.IContext<S, M, A>;
+
   private state: S;
   private lastState: S;
   private mutations: R['mutations'];
   private actions: R['actions'];
   private listeners: Array<() => any> = [];
 
-  constructor(preloadedState: S, reducers: R) {
+  constructor(preloadedState: S, reducers: R, enhancer: IEnhancer) {
     this.state = this.lastState = preloadedState;
     this.mutations = reducers.mutations;
     this.actions = reducers.actions;
 
-    this.dispatch = this.dispatch.bind(this);
     this.commit = this.commit.bind(this);
-    this.getState  = this.getState.bind(this);
-    this.getLastState  = this.getLastState.bind(this);
+    this.dispatch = this.dispatch.bind(this);
+    this.getState = this.getState.bind(this);
+    this.getLastState = this.getLastState.bind(this);
+
+    this.context = {
+      getState: this.getState,
+      getLastState: this.getLastState,
+      commit: this.commit,
+      dispatch: this.dispatch
+    };
+
+    this.context.commit = this.commit = enhancer(this.context).bind(this);
   }
 
-  public commit: ICommit<S, R['mutations']> = (mutation, payload) => {
+  public commit: TypeRedux.ICommit<S, R['mutations']> = (mutation, payload) => {
+    if (typeof mutation !== 'string') {
+      return this.adapterReduxDispatch(mutation as any);
+    }
+
     this.lastState = this.state;
     this.state = this.mutations[mutation](this.getState, payload);
     this.notify();
   }
 
-  public dispatch: IDispatch<S, R['mutations'], R['actions']> = async (action, payload) => {
+  public dispatch: TypeRedux.IDispatch<S, R['mutations'], R['actions']> = async (action, payload) => {
+    if (typeof action !== 'string') {
+      return this.adapterReduxDispatch(action as any);
+    }
+
     const act = this.actions[action];
     if (/^async/.test(act.toString())) {
-      await act(this.context(), payload);
+      await act(this.context, payload);
     } else {
-      act(this.context(), payload);
+      act(this.context, payload);
     }
   }
 
@@ -53,21 +78,23 @@ export class Store<S, M extends IMutations<S>, A extends IActions<S, M, A>, R ex
     return this.lastState;
   }
 
-  private context() {
-    return {
-      getState: this.getState,
-      commit: this.commit,
-      dispatch: this.dispatch
-    };
-  }
-
   private notify() {
     this.listeners.forEach((callback) => {
       callback();
     });
   }
+
+  private adapterReduxDispatch(action: TypeRedux.ITypePayload) {
+    const { type, ...data } = action as any;
+    this.commit(((action as any).type), data);
+  }
 }
 
-export function createStore<S, M extends IMutations<S>, A extends IActions<S, M, A>, R extends IReducers<S, M, A>>(preloadedState: S, reducers: R) {
-  return new Store(preloadedState, reducers);
+export function createStore<
+  S,
+  M extends TypeRedux.IMutations<S>,
+  A extends TypeRedux.IActions<S, M, A>,
+  R extends TypeRedux.IReducers<S, M, A>
+>(preloadedState: S, reducers: R, enhancer: IEnhancer = applyMiddleware()) {
+  return new Store(preloadedState, reducers, enhancer);
 }

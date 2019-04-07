@@ -1,10 +1,10 @@
 import { ICtx } from './index';
-
 export async function fetchNewestCount(ctx: ICtx) {
   await ctx.dispatch('fetchRepurl');
   const result = await fetch(ctx.getState().repUrl).then((raw) => raw.json());
   ctx.commit('set', result.length);
   ctx.commit('loading', false);
+
 }
 
 export async function fetchRepurl(ctx: ICtx) {
