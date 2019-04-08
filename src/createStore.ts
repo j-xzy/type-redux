@@ -32,7 +32,9 @@ export class Store<
       dispatch: this.dispatch
     };
 
-    this.context.commit = this.commit = enhancer(this.context).bind(this);
+    const { commit, dispatch  } = enhancer(this.context);
+    this.context.commit = this.commit = commit.bind(this);
+    this.context.dispatch = this.dispatch = dispatch.bind(this);
   }
 
   public commit: TypeRedux.ICommit<S, R['mutations']> = (mutation, payload) => {
@@ -95,6 +97,6 @@ export function createStore<
   M extends TypeRedux.IMutations<S>,
   A extends TypeRedux.IActions<S, M, A>,
   R extends TypeRedux.IReducers<S, M, A>
->(preloadedState: S, reducers: R, enhancer: IEnhancer = applyMiddleware()) {
+>(preloadedState: S, reducers: R, enhancer: IEnhancer = applyMiddleware({})) {
   return new Store(preloadedState, reducers, enhancer);
 }

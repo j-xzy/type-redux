@@ -11,7 +11,7 @@ const initialState = {
 
 const reducers = { mutations, actions };
 
-export const store = createStore(initialState, reducers, applyMiddleware(createLogger()));
+export const store = createStore(initialState, reducers, applyMiddleware({ mutations: [createLogger()] }));
 
 type IState = typeof initialState;
 export type IGetState = () => IState;

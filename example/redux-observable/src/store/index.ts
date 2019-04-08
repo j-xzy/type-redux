@@ -12,7 +12,7 @@ const initialState = {
 
 const reducers = { mutations, actions: {} };
 
-export const store = createStore(initialState, reducers, applyMiddleware(epicMiddleware as any));
+export const store = createStore(initialState, reducers, applyMiddleware({ mutations: [epicMiddleware] }));
 
 epicMiddleware.run(rootEpic);
 

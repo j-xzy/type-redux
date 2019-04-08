@@ -1,7 +1,7 @@
+import { Observable, Subject } from 'rxjs';
 import { applyMiddleware, createStore } from '../../../../src';
 import * as actions from './actions';
 import * as mutations from './mutations';
-import { Observable, Subject } from 'rxjs';
 
 const initialState = {
   count: 0,
@@ -11,17 +11,17 @@ const initialState = {
 
 const reducers = { mutations, actions };
 
-const middleware: TypeRedux.IMiddleware = (ctx) => {
+const middleware: TypeRedux.IMutationMiddleware = (ctx) => {
   const ob$ = new Observable();
   const sub$ = new Subject();
-  sub$.subscribe((x) => console.log(x))
+  sub$.subscribe((x) => console.log(x));
   return (next) => (mutation) => {
     sub$.next(mutation);
     return next(mutation);
   };
 };
 
-export const store = createStore(initialState, reducers, applyMiddleware(middleware));
+export const store = createStore(initialState, reducers, applyMiddleware({ mutations: [] }));
 
 type IState = typeof initialState;
 export type IGetState = () => IState;

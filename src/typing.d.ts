@@ -32,8 +32,13 @@ declare namespace TypeRedux {
     [p: string]: any;
   }
 
-  type IMiddleware = <S, M extends IMutations<S>, A extends IActions<S, M, A>>
+  type IMutationMiddleware = <S, M extends IMutations<S>, A extends IActions<S, M, A>>
     (ctx: IContext<S, M, A>)
     => (next: (mutation: ITypePayload) => S)
       => (mutation: ITypePayload) => S
+
+  type IActionMiddleware = <S, M extends IMutations<S>, A extends IActions<S, M, A>>
+    (ctx: IContext<S, M, A>)
+    => (next: (action: ITypePayload) => any)
+      => (action: ITypePayload) => any
 }
