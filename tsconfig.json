@@ -26,7 +26,7 @@
     ],
   },
   "include": [
-    "./src"
+    "./src", "interface/typing.d.ts"
   ],
   "exclude": [
     "node_modules"

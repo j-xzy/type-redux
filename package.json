@@ -1,6 +1,6 @@
 {
   "name": "type-redux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
@@ -9,7 +9,8 @@
     "fix-lint": "tslint -c tslint.json -p tsconfig.json --fix"
   },
   "files": [
-    "lib"
+    "lib",
+    "interface"
   ],
   "license": "MIT",
   "devDependencies": {
