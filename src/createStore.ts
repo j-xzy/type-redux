@@ -5,7 +5,7 @@ export class Store<
   M extends TypeRedux.IMutations<S>,
   A extends TypeRedux.IActions<S, M, A>,
   R extends TypeRedux.IReducers<S, M, A>
-  > {
+  > implements TypeRedux.IStore<S, M, A> {
 
   public context: TypeRedux.IContext<S, M, A>;
 
@@ -32,9 +32,8 @@ export class Store<
       dispatch: this.dispatch
     };
 
-    const { commit, dispatch  } = enhancer(this.context);
+    const commit = enhancer(this);
     this.context.commit = this.commit = commit.bind(this);
-    this.context.dispatch = this.dispatch = dispatch.bind(this);
   }
 
   public commit: TypeRedux.ICommit<S, R['mutations']> = (mutation, payload) => {
@@ -97,6 +96,6 @@ export function createStore<
   M extends TypeRedux.IMutations<S>,
   A extends TypeRedux.IActions<S, M, A>,
   R extends TypeRedux.IReducers<S, M, A>
->(preloadedState: S, reducers: R, enhancer: IEnhancer = applyMiddleware({})) {
+>(preloadedState: S, reducers: R, enhancer: IEnhancer = applyMiddleware()) {
   return new Store(preloadedState, reducers, enhancer);
 }

@@ -23,8 +23,8 @@ declare namespace TypeRedux {
   type IDispatch<S, M extends IMutations<S>, A extends IActions<S, M, A>> = <K extends keyof A>(action: K, payload?: Parameters<A[K]>[1]) => Promise<any>;
 
   interface IReducers<S, M extends IMutations<S>, A extends IActions<S, M, A>> {
-    actions: IActions<S, M, A>;
-    mutations: IMutations<S>;
+    actions: A;
+    mutations: M;
   }
 
   interface ITypePayload {
@@ -32,13 +32,18 @@ declare namespace TypeRedux {
     [p: string]: any;
   }
 
-  type IMutationMiddleware = <S, M extends IMutations<S>, A extends IActions<S, M, A>>
-    (ctx: IContext<S, M, A>)
-    => (next: (mutation: ITypePayload) => S)
-      => (mutation: ITypePayload) => S
+  interface IStore<S, M extends IMutations<S>, A extends IActions<S, M, A>> {
+    context: IContext<S, M, A>;
+    commit: ICommit<S, M>;
+    dispatch: IDispatch<S, M, A>;
+    subscribe: (callback: (...args: any[]) => any) => () => void;
+    unSubscribe: (...args: any[]) => any;
+    getState: () => S;
+    getLastState: () => S;
+  }
 
-  type IActionMiddleware = <S, M extends IMutations<S>, A extends IActions<S, M, A>>
-    (ctx: IContext<S, M, A>)
-    => (next: (action: ITypePayload) => any)
-      => (action: ITypePayload) => any
+  type IMiddleware = <S, M extends IMutations<S>, A extends IActions<S, M, A>>
+    (store: IStore<S, M, A>)
+    => (next: (mutation: ITypePayload) => S)
+      => (mutation: ITypePayload) => S;
 }

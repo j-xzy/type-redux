@@ -1,4 +1,4 @@
 node_modules
-lib
+/lib
 yarn.lock
 package-lock.json
