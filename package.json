@@ -1,6 +1,6 @@
 {
   "name": "type-redux",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "./lib/index.js",
   "scripts": {
     "clean": "rm -fr lib",
@@ -12,6 +12,7 @@
     "lib",
     "interface"
   ],
+  "typings": "./interface/typing.d.ts",
   "license": "MIT",
   "devDependencies": {
     "clean-webpack-plugin": "^1.0.1",
