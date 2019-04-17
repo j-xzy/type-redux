@@ -10,8 +10,7 @@ let client;
 
 // webpack配置
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
-  publicPath: '/',
-  logLevel: 'warn'
+  publicPath: '/'
 });
 app.use(bodyParser.json());
 app.use(devMiddleware);
