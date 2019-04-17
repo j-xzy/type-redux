@@ -41,8 +41,13 @@ export class Store<
       return this.adapterReduxDispatch(mutation as any);
     }
 
+    const mut = this.mutations[mutation];
+    if (!mut) {
+      return;
+    }
+
     this.lastState = this.state;
-    this.state = this.mutations[mutation](this.getState, payload);
+    this.state = mut(this.getState, payload);
     this.notify();
   }
 
@@ -52,6 +57,10 @@ export class Store<
     }
 
     const act = this.actions[action];
+    if (!act) {
+      return;
+    }
+
     if (/^async/.test(act.toString())) {
       await act(this.context, payload);
     } else {
@@ -85,9 +94,11 @@ export class Store<
     });
   }
 
-  private adapterReduxDispatch(action: TypeRedux.ITypePayload) {
-    const { type, ...data } = action as any;
-    this.commit(((action as any).type), data);
+  private adapterReduxDispatch(action: any) {
+    if (Object.prototype.toString.apply(action) === '[object Object]') {
+      const { type, ...data } = action as any;
+      typeof type !== 'undefined' && this.commit(type, data);
+    }
   }
 }
 
