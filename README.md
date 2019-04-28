@@ -149,13 +149,20 @@ export type ICtx = TypeRedux.IContext<IState, typeof reducers['mutations'], type
 
 ```
 
-5. 使用
+5. 监听store变更
+``` ts
+store.subscribe(() => {
+  console.log(store.getState())
+})
+```
+
+6. 使用
 ``` ts
 store.commit('add', 1);
 store.dispatch('fetchNewestCount');
 ```
 
-6. 中间件的使用(可选)
+7. 中间件的使用(可选)
 
 ``` ts
 import { createLogger } from 'redux-logger';
