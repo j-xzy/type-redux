@@ -1,15 +1,15 @@
 import { createLogger } from 'redux-logger';
-import { applyMiddleware, createStore } from '../../../../src';
+import { applyMiddleware, createStore } from 'type-redux';
 import * as actions from './actions';
 import * as mutations from './mutations';
 
-const initialState = {
+export const initialState = {
   count: 0,
   repUrl: '',
   loading: false
 };
 
-const reducers = { mutations, actions };
+export const reducers = { mutations, actions };
 
 export const store = createStore(initialState, reducers, applyMiddleware(createLogger()));
 

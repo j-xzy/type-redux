@@ -9,7 +9,7 @@
     "declaration": true,
     "experimentalDecorators": true,
     "rootDir": "./src",
-    "module": "esnext",
+    "module": "umd",
     "target": "esnext",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
