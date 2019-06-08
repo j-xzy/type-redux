@@ -1,4 +1,4 @@
-import { createStore } from 'type-redux';
+import { createStore } from '../../../lib';
 import { initialState, reducers } from '../src/store';
 
 describe('mutation', () => {
@@ -8,8 +8,13 @@ describe('mutation', () => {
     store = createStore(initialState, reducers);
   });
 
-  it('count', () => {
+  it('add', () => {
     store.commit('add', 10);
     expect(store.getState().count).toBe(10);
+  });
+
+  it('count', () => {
+    store.commit('minus', -2);
+    expect(store.getState().count).toBe(2);
   });
 });

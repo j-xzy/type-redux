@@ -5,7 +5,6 @@ export async function fetchNewestCount(ctx: ICtx) {
   const result = await fetch(ctx.getState().repUrl).then((raw) => raw.json());
   ctx.commit('set', result.length);
   ctx.commit('loading', false);
-
 }
 
 export async function fetchRepurl(ctx: ICtx) {
