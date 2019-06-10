@@ -7,7 +7,8 @@
     "build": "yarn clean && tsc -p ./tsconfig.json",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "fix-lint": "tslint -c tslint.json -p tsconfig.json --fix",
-    "test": "jest __test__"
+    "test": "jest __test__",
+    "coveralls": "jest __test__ --coverage --coverageReporters=text-lcov | coveralls"
   },
   "files": [
     "lib",
@@ -17,15 +18,16 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-typescript": "^7.3.3",
     "@types/jest": "^24.0.13",
+    "coveralls": "^3.0.4",
     "jest": "^24.8.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "ts-loader": "^5.3.3",
     "tslint": "^5.12.0",
-    "typescript": "^3.4.3",
-    "@babel/plugin-proposal-class-properties": "^7.4.4"
+    "typescript": "^3.4.3"
   }
 }
