@@ -1,6 +1,7 @@
 # <center>强类型的Redux状态管理</center>
 
 [![npm version](https://badge.fury.io/js/type-redux.svg)](https://badge.fury.io/js/type-redux)
+[![Build Status](https://www.travis-ci.org/whj1995/type-redux.svg?branch=master)](https://www.travis-ci.org/whj1995/type-redux)
 
 - 🌿 源于redux,借鉴vuex
 
