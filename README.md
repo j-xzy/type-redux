@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/type-redux.svg)](https://badge.fury.io/js/type-redux)
 [![Build Status](https://www.travis-ci.org/whj1995/type-redux.svg?branch=master)](https://www.travis-ci.org/whj1995/type-redux)
-![Coveralls github](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_100.svg)
+[![Coverage Status](https://coveralls.io/repos/github/whj1995/type-redux/badge.svg?branch=master)](https://coveralls.io/github/whj1995/type-redux?branch=master)
 
 
 - 🌿 源于redux,借鉴vuex
