@@ -60,19 +60,19 @@ function reducer(state, action) {
 
 1. action被约束
 
-![action](https://github.com/whj1995/type-redux/blob/master/doc/act.png?raw=true)
+![action](https://raw.githubusercontent.com/whj1995/images-host/master/action.gif)
 
  借助ide的智能提示，能很清楚的看见所有action,省去了大量以常量命名action的模板代码。再也不用担心action写错。
 
 2. payload的约束
 
-![payload](https://github.com/whj1995/type-redux/raw/master/doc/payload.png)
+![payload](https://raw.githubusercontent.com/whj1995/images-host/master/payload.gif)
 
 不同的action,有着不同的payload。**type-redux**将其一一对应，能很清楚的知道action需要什么payload。
 
 3. 一个函数就是一个reducer，对应一个action
 
-![reducer](https://github.com/whj1995/type-redux/raw/master/doc/reducer.png)
+![reducer](https://raw.githubusercontent.com/whj1995/images-host/master/reducer-min.png)
 
 以一个个的函数组成一个个reducer,函数名就为action名称。这样比写一个超大的以switch处理action的reducer要优雅、清晰的多。
 
@@ -80,7 +80,7 @@ function reducer(state, action) {
 
 起源于 *redux* 、借鉴 *vuex* 、以 *typescript* 进行约束。
 
-![type-redux](https://github.com/whj1995/type-redux/raw/master/doc/type-redux.jpg)
+![type-redux](https://raw.githubusercontent.com/whj1995/images-host/master/type-redux.jpg)
 
 - **Store**: 数据源，保存着state。
 
