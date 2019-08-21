@@ -17,7 +17,7 @@
 
 **让我们先来看看裸写redux大致需要哪些步骤:**
 
-在裸写redux时,通常需要维护以常量命名的action
+在裸写redux时,通常需要维护以常量命名的action：
 
 ``` js
 
@@ -25,7 +25,7 @@ const FOOACTION = 'FOOACTION'
 
 ```
 
-然后再dispath
+然后再dispath：
 
 ``` js
 
@@ -35,7 +35,7 @@ dispath({type: FOOACTION, payload: ''})
 
 ```
 
-在reducer函数中以switch处理不同的action
+在reducer函数中以switch处理不同的action：
 
 ``` js
 
